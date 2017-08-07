@@ -1,6 +1,6 @@
 ---
 title: "Course 9 - Week 2"
-author: "Marius Peché"
+author: "Marius PechÃ©"
 date: "August 7, 2017"
 output: html_document
 ---
@@ -18,7 +18,7 @@ We are asked to create a web page that incorporates a geographical graph created
 
 ## Data
 ### Description
-In this project, we will be using data collected during a four day safari through the __Kruger National Park__ in South Africa. The data contains the location, time stamp and details about the species sighted on the safari. The data is distributed across two files, which will need to be combined before we can plot it on the map. Also, the GPS did not record all the locations properly, so we just remove those sightings.
+In this project, we will be using data collected during a five day safari through the __Kruger National Park__ in South Africa. The data contains the location, time stamp and details about the species sighted on the safari. The data is distributed across two files, which will need to be combined before we can plot it on the map. Also, the GPS did not record all the locations properly, so we just remove those sightings.
 
 ```{r}
 knp <- read.csv("KNP.csv")

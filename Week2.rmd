@@ -1,0 +1,83 @@
+---
+title: "Course 9 - Week 2"
+author: "Marius Peché"
+date: "August 7, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(leaflet)
+```
+
+## Introduction
+This is the first Peer Reviewed Assignment for the __John Hobkins Data Science__ course on Coursera.
+
+We are asked to create a web page that incorporates a geographical graph created with the R package _Leaflet_.
+
+
+## Data
+### Description
+In this project, we will be using data collected during a four day safari through the __Kruger National Park__ in South Africa. The data contains the location, time stamp and details about the species sighted on the safari. The data is distributed across two files, which will need to be combined before we can plot it on the map. Also, the GPS did not record all the locations properly, so we just remove those sightings.
+
+```{r}
+knp <- read.csv("KNP.csv")
+knp <- knp[knp$lat!="Unable to determine GPS",]
+species <- read.csv("Species.csv")
+knp <- merge(knp,species[,1:4],by="SpeciesUId")
+knp <- knp[order(knp$Timestamp),]
+
+knp$date = as.Date(knp$Timestamp)
+knp$lat <- as.numeric(as.character(knp$lat))
+knp$long <- as.numeric(as.character(knp$long))
+```
+
+
+### Unique icons
+The default marker used by _leaflet_ is the "Google-pin". But it is possible to define our own icons using the _iconList_ functionality, which can add some additional visual information to the map.Therefore, we will be using these icons to identify between the different types of sightings:
+* Mammals   : [](mammal0.png)
+* Birds     : [](bird0.png)
+* Reptiles  : [](reptile0.png)
+
+```{r}
+sightingIcon <- iconList(
+  Birds = makeIcon("bird0.png",
+                iconWidth = 30, iconHeight = 30,
+                iconAnchorX = 9, iconAnchorY = 9),
+  Mammals = makeIcon("mammal0.png",
+                iconWidth = 30, iconHeight = 30,
+                iconAnchorX = 9, iconAnchorY = 9),
+  Reptiles = makeIcon("reptile0.png",
+                iconWidth = 30, iconHeight = 30,
+                iconAnchorX = 9, iconAnchorY = 9)
+)
+```
+Alternatively, we can also just plot color-coded circles onto the map with _addCircleMarkers_.
+
+
+
+##Final Leaflet interactive map.
+Using the location data, we now plot our icons onto the map, and add the species name as a popup text. Also, we will add layers, using _addLayersControl_ to specify between the different days.
+
+```{r}
+#empty Map
+knp_map <- leaflet() %>% addTiles()
+
+#add markers for each date
+unique(knp$date) %>% purrr::walk( function(day){
+  dayData <- knp[knp$date==day,]
+  knp_map <<- knp_map %>%
+    addMarkers(lat=dayData$lat, lng=dayData$long,
+      popup=dayData$Name, group=day,
+             clusterOptions = markerClusterOptions(removeOutsideVisibleBounds = FALSE), 
+             icon=sightingIcon[dayData$Class])
+})
+
+#add Layers
+knp_map <- knp_map %>% addLayersControl(baseGroups=sort(unique(knp$date)),
+                 options = layersControlOptions(collapsed = FALSE))
+
+#Display map
+knp_map
+```
+

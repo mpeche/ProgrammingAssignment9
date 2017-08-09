@@ -1,6 +1,6 @@
 ---
 title: "Week3"
-author: "Marius Peché"
+author: "Marius PechÃ©"
 date: "August 9, 2017"
 output: ioslides_presentation
 ---

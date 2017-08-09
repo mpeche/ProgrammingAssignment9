@@ -1,6 +1,6 @@
 ---
 title: "Course 9 - Week 2"
-author: "Marius Peché"
+author: "Marius PechÃ©"
 date: "August 7, 2017"
 output: html_document
 ---

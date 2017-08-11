@@ -1,7 +1,7 @@
 ---
-title: "Week3"
+title: "Week3: Plotly example - Total sightings seen during Safari"
 author: "Marius Peché"
-date: "August 9, 2017"
+date: "August 11, 2017"
 output: ioslides_presentation
 ---
 
